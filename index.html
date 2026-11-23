@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#153f35">
+  <meta name="description" content="حساب توصية سمادية إرشادية اعتمادًا على نتيجة تحليل التربة والمحصول المختار.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <title>SoilFert | التوصية السمادية</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="SoilFert">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span>
+          <strong>SoilFert</strong>
+          <small>التوصية السمادية</small>
+        </span>
+      </a>
+      <div class="header-meta">
+        <span class="offline-badge"><i></i> يعمل محليًا</span>
+        <span class="version-chip">نسخة أولية</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">تحليل التربة ← قرار أوضح</p>
+          <h1>حوّل نتيجة التحليل إلى <em>خطة تسميد</em> مفهومة.</h1>
+          <p class="hero-text">أدخل القيم كما وردت في تقرير المختبر، واختر المحصول. التوصية الأساسية تُستخرج مباشرة من مستوى N وP وK في التربة، مع إظهار كل خطوة حسابية بوضوح.</p>
+        </div>
+        <div class="hero-note">
+          <span class="note-icon">i</span>
+          <div>
+            <strong>إرشادي وليس بديلًا عن المختص</strong>
+            <p>الجداول الحالية نسخة أولية من الملفات المرفوعة، ويجب اعتماد مصادرها الزراعية قبل الاستخدام التجاري.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="workspace">
+        <section class="card form-card" aria-labelledby="form-title">
+          <div class="card-heading">
+            <div>
+              <p class="section-kicker">01 / البيانات</p>
+              <h2 id="form-title">بيانات الحقل والتحليل</h2>
+            </div>
+            <span class="card-number">01</span>
+          </div>
+
+          <form id="analysisForm" novalidate>
+            <fieldset class="field-group">
+              <legend>نوع الزراعة</legend>
+              <div class="segmented-control category-control">
+                <label class="segment-option active" data-category-label>
+                  <input type="radio" name="category" value="crop" checked>
+                  <span class="segment-icon">مح</span>
+                  <span><strong>محصول حقلي</strong><small>38 خيارًا</small></span>
+                </label>
+                <label class="segment-option" data-category-label>
+                  <input type="radio" name="category" value="tree">
+                  <span class="segment-icon">ش</span>
+                  <span><strong>شجرة مثمرة</strong><small>7 فئات</small></span>
+                </label>
+              </div>
+            </fieldset>
+
+            <div class="form-grid two-columns">
+              <label class="input-block">
+                <span class="input-label">المحصول أو فئة الشجرة</span>
+                <select id="cropSelect" required></select>
+                <small class="helper-text" id="selectionHelper">القيم المعروضة مأخوذة من قاعدة البيانات الأولية.</small>
+              </label>
+              <label class="input-block">
+                <span class="input-label">وحدة التوصية</span>
+                <select id="unitSelect">
+                  <option value="dunum">كغ / دونم</option>
+                  <option value="hectare">كغ / هكتار</option>
+                </select>
+                <small class="helper-text">1 هكتار = 10 دونم.</small>
+              </label>
+            </div>
+
+            <div id="treeOptions" class="tree-options" hidden>
+              <div class="subsection-heading"><span>خيارات إضافية للأشجار</span><small>تعديل معلن بعد الحساب الأساسي</small></div>
+              <div class="form-grid three-columns">
+                <label class="input-block">
+                  <span class="input-label">حالة الري</span>
+                  <select id="irrigationSelect">
+                    <option value="irrigated">مروي</option>
+                    <option value="rainfed">بعل</option>
+                  </select>
+                </label>
+                <label class="input-block">
+                  <span class="input-label">مرحلة العمر</span>
+                  <select id="ageSelect">
+                    <option value="young">فتية — 30%</option>
+                    <option value="intermediate">متوسطة — 65%</option>
+                    <option value="mature" selected>بالغة مثمرة — 100%</option>
+                  </select>
+                </label>
+                <label class="input-block">
+                  <span class="input-label">كثافة الأشجار <small>(اختياري)</small></span>
+                  <input id="densityInput" type="number" inputmode="decimal" min="0" step="any" placeholder="مثال: 40">
+                </label>
+              </div>
+            </div>
+
+            <div class="subsection-heading analysis-heading"><span>نتائج تحليل التربة</span><small>أدخل القيم كما وردت في التقرير</small></div>
+            <div class="soil-input-grid">
+              <label class="soil-input nitrogen">
+                <span class="element-symbol">N</span>
+                <span class="element-copy"><strong>النيتروجين</strong><small>PPM</small></span>
+                <input id="nitrogenInput" type="number" inputmode="decimal" min="0" step="any" placeholder="0.0" required>
+              </label>
+              <label class="soil-input phosphorus">
+                <span class="element-symbol">P</span>
+                <span class="element-copy"><strong>الفوسفور</strong><small>PPM</small></span>
+                <input id="phosphorusInput" type="number" inputmode="decimal" min="0" step="any" placeholder="0.0" required>
+              </label>
+              <label class="soil-input potassium">
+                <span class="element-symbol">K</span>
+                <span class="element-copy"><strong>البوتاسيوم</strong><small>PPM</small></span>
+                <input id="potassiumInput" type="number" inputmode="decimal" min="0" step="any" placeholder="0.0" required>
+              </label>
+              <label class="soil-input organic">
+                <span class="element-symbol">OM</span>
+                <span class="element-copy"><strong>المادة العضوية</strong><small>%</small></span>
+                <input id="organicInput" type="number" inputmode="decimal" min="0" step="any" placeholder="0.0" required>
+              </label>
+            </div>
+            <p class="form-error" id="formError" role="alert" hidden></p>
+
+            <div class="form-actions">
+              <button class="button primary-button" type="submit"><span>احسب التوصية</span><b>←</b></button>
+              <button class="button ghost-button" id="resetButton" type="button">مسح الحقول</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="card result-card" aria-labelledby="result-title">
+          <div class="card-heading result-heading">
+            <div>
+              <p class="section-kicker">02 / النتيجة</p>
+              <h2 id="result-title">تقرير التوصية</h2>
+            </div>
+            <div class="result-actions" id="resultActions" hidden>
+              <button class="icon-button" id="shareButton" type="button" title="مشاركة التقرير" aria-label="مشاركة التقرير">↗</button>
+              <button class="icon-button" id="printButton" type="button" title="طباعة التقرير" aria-label="طباعة التقرير">⤓</button>
+            </div>
+          </div>
+
+          <div id="emptyResult" class="empty-result">
+            <div class="empty-orbit"><span></span><span></span><span></span></div>
+            <h3>النتيجة ستظهر هنا</h3>
+            <p>أدخل قيم التحليل من الجهة اليمنى، ثم اضغط «احسب التوصية» لعرض التشخيص والاحتياج والأسمدة التجارية.</p>
+            <div class="empty-rule"><span></span><small>لا تُحتسب توصية دون تحليل</small><span></span></div>
+          </div>
+
+          <div id="report" class="report" hidden>
+            <div class="report-intro">
+              <div>
+                <span class="report-label">تقرير إرشادي</span>
+                <h3 id="reportCropName">—</h3>
+                <p id="reportMeta">—</p>
+              </div>
+              <span class="report-date" id="reportDate">—</span>
+            </div>
+
+            <div class="diagnosis-grid" id="diagnosisGrid"></div>
+
+            <div class="report-section">
+              <div class="report-section-title"><span class="section-index">A</span><div><h4>الاحتياج السمادي الأساسي</h4><small>ناتج ربط مستوى التحليل بجدول المحصول</small></div></div>
+              <div class="recommendation-table" id="needsTable"></div>
+            </div>
+
+            <div class="report-section">
+              <div class="report-section-title"><span class="section-index">B</span><div><h4>التحويل إلى أسمدة تجارية</h4><small>حسب نسب العناصر المعلنة لكل سماد</small></div></div>
+              <div class="fertilizer-grid" id="fertilizerGrid"></div>
+            </div>
+
+            <div class="report-section advice-section">
+              <div class="report-section-title"><span class="section-index">C</span><div><h4>قراءة سريعة وإرشادات</h4><small>تنبيهات مرتبطة بنتيجة التحليل</small></div></div>
+              <div id="adviceList" class="advice-list"></div>
+            </div>
+
+            <div class="scientific-note" id="scientificNote"></div>
+            <button class="copy-report" id="copyButton" type="button">نسخ نص التقرير</button>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer"><span>SoilFert</span><span>أداة إرشادية محلية — راجع المهندس الزراعي قبل التنفيذ</span></footer>
+  </div>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

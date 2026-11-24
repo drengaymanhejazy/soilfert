@@ -120,6 +120,9 @@ html, body { max-width: 100%; overflow-x: hidden; }
 .reference-item small { display: block; margin-top: 1px; color: var(--muted); font-size: 9px; }
 .reference-item b { color: var(--green); font: 16px Manrope, sans-serif; }
 .reference-status { display: flex; align-items: center; gap: 7px; margin-top: 12px; padding: 10px 11px; border-radius: 8px; color: #775b36; background: var(--gold-soft); font-size: 10px; }
+.reference-note { display: grid; gap: 4px; margin-top: 8px; padding: 10px 11px; border: 1px solid #d6e4d9; border-right: 3px solid var(--green); border-radius: 8px; color: var(--deep); background: #f7fbf8; font-size: 10px; line-height: 1.8; }
+.reference-note strong { color: var(--green); }
+.reference-note span { color: var(--muted); }
 .status-dot { width: 7px; height: 7px; flex: 0 0 7px; border-radius: 50%; background: var(--gold); }
 @media (max-width: 600px) {
   .app-shell { padding-left: 12px; padding-right: 12px; }
